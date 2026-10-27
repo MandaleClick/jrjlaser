@@ -4,8 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JRJ Láser | Trabajos y Diseños Personalizados</title>
-  
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
   <style>
     :root {
@@ -15,105 +13,137 @@
       --text-light: #f5f5f5;
       --text-muted: #aaaaaa;
     }
+
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
+
     body {
       background-color: var(--bg-dark);
       color: var(--text-light);
     }
+
     header {
       background-color: #000;
       padding: 15px 5%;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
       border-bottom: 2px solid var(--primary);
     }
+
     .logo-container {
       display: flex;
       align-items: center;
       gap: 15px;
     }
+
     .logo-container img {
       height: 50px;
+      width: auto;
     }
+
     .logo-text h1 {
       font-size: 1.5rem;
       color: var(--primary);
       text-transform: uppercase;
       letter-spacing: 1px;
     }
+
     .logo-text p {
       font-size: 0.8rem;
       color: var(--text-muted);
     }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+    }
+
     nav a {
       color: var(--text-light);
       text-decoration: none;
-      margin-left: 20px;
       font-weight: 600;
     }
-    nav a.active {
+
+    nav a.active,
+    nav a:hover {
       color: var(--primary);
     }
+
     .hero {
       background-color: #1a1a1a;
       padding: 40px 5%;
       text-align: center;
       border-bottom: 1px solid #333;
     }
+
     .hero h2 {
       color: var(--primary);
       font-size: 2rem;
       margin-bottom: 10px;
     }
+
     .hero p {
       color: var(--text-muted);
       margin-bottom: 20px;
+      line-height: 1.6;
     }
+
     .btn-whatsapp {
       background-color: #25d366;
       color: white;
-      padding: 10px 20px;
+      padding: 12px 20px;
       text-decoration: none;
       border-radius: 5px;
       font-weight: bold;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+      display: inline-block;
     }
+
     .container {
       padding: 40px 5%;
     }
+
+    .section-title {
+      color: var(--primary);
+      margin-bottom: 25px;
+      font-size: 1.8rem;
+    }
+
     .categories {
       display: flex;
       gap: 10px;
       margin-bottom: 30px;
       flex-wrap: wrap;
     }
+
     .category-btn {
       background-color: #2a2a2a;
       color: var(--text-light);
       border: 1px solid #444;
       padding: 8px 16px;
       border-radius: 20px;
-      cursor: pointer;
     }
+
     .category-btn.active {
       background-color: var(--primary);
       color: #000;
       border-color: var(--primary);
       font-weight: bold;
     }
+
     .products-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: 25px;
     }
+
     .product-card {
       background-color: var(--card-bg);
       border-radius: 8px;
@@ -122,55 +152,59 @@
       display: flex;
       flex-direction: column;
     }
+
     .product-image {
+      display: block;
       width: 100%;
-      height: 200px;
+      height: 220px;
       object-fit: cover;
       background-color: #2a2a2a;
     }
+
     .product-info {
-      padding: 15px;
+      padding: 18px;
       display: flex;
       flex-direction: column;
       flex-grow: 1;
     }
-    .product-tag {
-      font-size: 0.75rem;
-      color: var(--primary);
-      text-transform: uppercase;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
+
     .product-title {
-      font-size: 1.2rem;
-      margin-bottom: 8px;
-    }
-    .product-description {
-      font-size: 0.85rem;
-      color: var(--text-muted);
+      font-size: 1.15rem;
       margin-bottom: 15px;
-      flex-grow: 1;
+      line-height: 1.4;
     }
+
     .product-price {
-      font-size: 1.3rem;
+      font-size: 1.4rem;
       font-weight: bold;
       color: var(--primary);
-      margin-bottom: 15px;
+      margin-bottom: 18px;
     }
+
     .btn-card-wa {
       background-color: transparent;
       border: 1px solid #25d366;
       color: #25d366;
       text-align: center;
-      padding: 8px;
+      padding: 10px;
       border-radius: 4px;
       text-decoration: none;
       font-weight: bold;
+      margin-top: auto;
     }
+
     .btn-card-wa:hover {
       background-color: #25d366;
       color: white;
     }
+
+    .mensaje-catalogo {
+      color: var(--text-muted);
+      text-align: center;
+      padding: 25px;
+      grid-column: 1 / -1;
+    }
+
     footer {
       background-color: #000;
       padding: 30px 5%;
@@ -179,107 +213,261 @@
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 20px;
+      gap: 25px;
     }
+
     footer h4 {
       color: var(--primary);
       margin-bottom: 10px;
     }
+
     footer p {
       color: var(--text-muted);
       font-size: 0.9rem;
+      line-height: 1.8;
+    }
+
+    .admin-link {
+      display: inline-block;
+      margin-top: 12px;
+      color: #777;
+      font-size: 0.8rem;
+      text-decoration: none;
+    }
+
+    .admin-link:hover {
+      color: var(--primary);
+    }
+
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      nav {
+        gap: 14px;
+      }
+
+      .hero h2 {
+        font-size: 1.6rem;
+      }
+
+      .container {
+        padding: 30px 5%;
+      }
+
+      .products-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
+
 <body>
 
   <header>
     <div class="logo-container">
-      <img src="./logo.png" alt="JRJ Láser Logo">
+      <img src="./logo.png" alt="Logo JRJ Láser">
       <div class="logo-text">
         <h1>JRJ Láser</h1>
         <p>GRABADOS Y CORTE LÁSER</p>
       </div>
     </div>
+
     <nav>
       <a href="./" class="active">Inicio</a>
       <a href="#productos">Productos</a>
-      <a href="https://wa.me/5491162670013" target="_blank">Contacto</a>
+      <a href="https://wa.me/5491162670013" target="_blank"
+         rel="noopener noreferrer">Contacto</a>
     </nav>
   </header>
 
   <section class="hero">
     <h2>Trabajos y Diseños Personalizados</h2>
-    <p>Especialistas en MDF, acrílico, vasos térmicos, chopps y grabado en metal.</p>
-    <a href="https://wa.me/5491162670013" class="btn-whatsapp" target="_blank">
+    <p>
+      Especialistas en MDF, acrílico, vasos térmicos, chopps
+      y grabado en metal.
+    </p>
+
+    <a href="https://wa.me/5491162670013"
+       class="btn-whatsapp"
+       target="_blank"
+       rel="noopener noreferrer">
       Consultar por WhatsApp
     </a>
   </section>
 
   <main class="container" id="productos">
+    <h2 class="section-title">Nuestros productos</h2>
+
     <div class="categories">
-      <button class="category-btn active">Todos los Productos</button>
-      <button class="category-btn">Cajas de MDF</button>
-      <button class="category-btn">Chopps y Vasos</button>
-      <button class="category-btn">Llaveros y Mates</button>
+      <button type="button" class="category-btn active">
+        Todos los productos
+      </button>
+      <button type="button" class="category-btn">
+        Cajas de MDF
+      </button>
+      <button type="button" class="category-btn">
+        Chopps y vasos
+      </button>
+      <button type="button" class="category-btn">
+        Llaveros y mates
+      </button>
     </div>
 
-    <div class="products-grid">
-      <div class="product-card">
+    <div class="products-grid" id="lista-productos">
+
+      <!-- Productos iniciales por si el catálogo no carga -->
+      <article class="product-card">
         <div class="product-info">
-          <span class="product-tag">CAJAS DE MDF</span>
           <h3 class="product-title">Cajas de MDF Personalizadas</h3>
-          <p class="product-description">Cajas de madera con grabados y calados personalizados a medida. Ideales para regalos especiales.</p>
           <div class="product-price">$ 5.500</div>
-          <a href="https://wa.me/5491162670013?text=Hola,%20quisiera%20consultar%20por%20las%20Cajas%20de%20MDF" class="btn-card-wa" target="_blank">Consultar por WhatsApp</a>
+          <a class="btn-card-wa"
+             href="https://wa.me/5491162670013"
+             target="_blank"
+             rel="noopener noreferrer">
+            Consultar por WhatsApp
+          </a>
         </div>
-      </div>
+      </article>
 
-      <div class="product-card">
+      <article class="product-card">
         <div class="product-info">
-          <span class="product-tag">CHOPPS Y VASOS</span>
           <h3 class="product-title">Chopps y Vasos Térmicos</h3>
-          <p class="product-description">Grabado láser de alta precisión en acero, vasos térmicos y chopps de cerveza de 473ml.</p>
           <div class="product-price">$ 12.000</div>
-          <a href="https://wa.me/5491162670013?text=Hola,%20quisiera%20consultar%20por%20los%20Chopps" class="btn-card-wa" target="_blank">Consultar por WhatsApp</a>
+          <a class="btn-card-wa"
+             href="https://wa.me/5491162670013"
+             target="_blank"
+             rel="noopener noreferrer">
+            Consultar por WhatsApp
+          </a>
         </div>
-      </div>
+      </article>
 
-      <div class="product-card">
+      <article class="product-card">
         <div class="product-info">
-          <span class="product-tag">LLAVEROS Y MATES</span>
           <h3 class="product-title">Llaveros y Mates</h3>
-          <p class="product-description">Diseños únicos grabados a madera y mates de acero/aluminio. Opción ideal para eventos e institucionales.</p>
           <div class="product-price">$ 3.500</div>
-          <a href="https://wa.me/5491162670013?text=Hola,%20quisiera%20consultar%20por%20los%20Llaveros%20y%20Mates" class="btn-card-wa" target="_blank">Consultar por WhatsApp</a>
+          <a class="btn-card-wa"
+             href="https://wa.me/5491162670013"
+             target="_blank"
+             rel="noopener noreferrer">
+            Consultar por WhatsApp
+          </a>
         </div>
-      </div>
+      </article>
+
     </div>
   </main>
 
   <footer>
     <div>
       <h4>JRJ Láser</h4>
-      <p>Corte y grabado láser de alta precisión para todos tus proyectos.</p>
-      <a href="./admin/" style="color: var(--text-muted); font-size: 0.8rem; text-decoration: underline;">Administración</a>
+      <p>
+        Corte y grabado láser de alta precisión
+        para todos tus proyectos.
+      </p>
+      <a href="./admin/" class="admin-link">Administración</a>
     </div>
+
     <div>
-      <h4>Contacto Directo</h4>
+      <h4>Contacto directo</h4>
       <p>WhatsApp: +54 9 11 6267-0013</p>
       <p>Buenos Aires, Argentina</p>
     </div>
   </footer>
 
   <script>
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on("init", user => {
-        if (!user) {
-          window.netlifyIdentity.on("login", () => {
-            document.location.href = "./admin/";
-          });
+    document.addEventListener("DOMContentLoaded", async function () {
+      const contenedor = document.getElementById("lista-productos");
+
+      try {
+        const respuesta = await fetch("./productos.json");
+
+        if (!respuesta.ok) {
+          throw new Error("No se pudo cargar productos.json");
         }
-      });
-    }
+
+        const productos = await respuesta.json();
+
+        if (!Array.isArray(productos)) {
+          throw new Error("El catálogo no tiene el formato esperado");
+        }
+
+        contenedor.innerHTML = "";
+
+        const productosVisibles = productos.filter(function (producto) {
+          return producto.visible !== false;
+        });
+
+        if (productosVisibles.length === 0) {
+          contenedor.innerHTML =
+            '<p class="mensaje-catalogo">Próximamente nuevos productos.</p>';
+          return;
+        }
+
+        productosVisibles.forEach(function (producto) {
+          const tarjeta = document.createElement("article");
+          tarjeta.className = "product-card";
+
+          if (producto.imagen) {
+            const imagen = document.createElement("img");
+            imagen.className = "product-image";
+            imagen.src = producto.imagen;
+            imagen.alt = producto.nombre || "Producto JRJ Láser";
+            imagen.loading = "lazy";
+
+            imagen.onerror = function () {
+              imagen.style.display = "none";
+            };
+
+            tarjeta.appendChild(imagen);
+          }
+
+          const info = document.createElement("div");
+          info.className = "product-info";
+
+          const titulo = document.createElement("h3");
+          titulo.className = "product-title";
+          titulo.textContent =
+            producto.nombre || "Producto personalizado";
+
+          const precio = document.createElement("div");
+          precio.className = "product-price";
+          precio.textContent = Number(producto.precio || 0).toLocaleString(
+            "es-AR",
+            {
+              style: "currency",
+              currency: "ARS",
+              maximumFractionDigits: 0
+            }
+          );
+
+          const consulta = document.createElement("a");
+          consulta.className = "btn-card-wa";
+          consulta.href =
+            "https://wa.me/5491162670013?text=" +
+            encodeURIComponent(
+              "Hola, quisiera consultar por " + (producto.nombre || "un producto")
+            );
+          consulta.target = "_blank";
+          consulta.rel = "noopener noreferrer";
+          consulta.textContent = "Consultar por WhatsApp";
+
+          info.appendChild(titulo);
+          info.appendChild(precio);
+          info.appendChild(consulta);
+          tarjeta.appendChild(info);
+          contenedor.appendChild(tarjeta);
+        });
+
+      } catch (error) {
+        console.error("Error al cargar el catálogo:", error);
+        // Si falla el JSON, se mantienen los productos iniciales.
+      }
+    });
   </script>
+
 </body>
 </html>
