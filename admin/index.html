@@ -1,11 +1,435 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Administración | JRJ Láser</title>
+<style>
+:root{--gold:#f5b000;--bg:#121212;--panel:#202020;--text:#f5f5f5;--muted:#aaa}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif}
+header{background:#000;border-bottom:2px solid var(--gold);padding:20px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+h1,h2{color:var(--gold);margin-top:0}
+main{max-width:1100px;margin:auto;padding:24px 16px}
+button,.button{background:var(--gold);color:#111;border:0;border-radius:6px;padding:11px 15px;font-weight:bold;cursor:pointer;text-decoration:none;display:inline-block}
+button.secondary{background:#383838;color:white}
+button.danger{background:#a83232;color:white}
+button:disabled{opacity:.5;cursor:not-allowed}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}
+.notice{padding:12px;border-radius:6px;background:#282828;color:#ddd;margin:14px 0;overflow-wrap:anywhere}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+.card{background:var(--panel);border:1px solid #393939;border-radius:9px;overflow:hidden}
+.card img,.preview{width:100%;height:180px;object-fit:contain;background:#181818}
+.cardbody{padding:15px}
+.card h3{margin-top:0;overflow-wrap:anywhere}
+.muted{color:var(--muted);font-size:.9rem}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+dialog{width:min(680px,94vw);max-height:90vh;overflow:auto;background:#202020;color:white;border:1px solid #555;border-radius:12px;padding:22px}
+dialog::backdrop{background:#000b}
+label{display:block;margin:14px 0 6px;font-weight:bold}
+input,textarea,select{width:100%;padding:11px;background:#111;color:white;border:1px solid #555;border-radius:5px;font:inherit}
+textarea{min-height:85px;resize:vertical}
+.check{display:flex;align-items:center;gap:10px}
+.check input{width:auto}
+.form-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.media-list{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.media-item{background:#333;padding:8px;border-radius:5px;overflow-wrap:anywhere}
+.small{font-size:.85rem;color:#bbb}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1 style="margin-bottom:5px">JRJ LÁSER</h1>
+    <div>Panel de administración de productos</div>
+  </div>
+  <a class="button" href="../" target="_blank" rel="noopener">Ver tienda</a>
+</header>
+
+<main>
+  <div id="status" class="notice">Para administrar productos, conectá este panel con el servicio seguro de almacenamiento.</div>
+
+  <div class="toolbar">
+    <button id="loginBtn">Conectar / ingresar</button>
+    <button id="addBtn" disabled>+ Agregar producto</button>
+    <button id="reloadBtn" class="secondary" disabled>Actualizar lista</button>
+    <button id="logoutBtn" class="secondary" hidden>Cerrar sesión</button>
+  </div>
+
+  <div class="notice">
+    Los campos del producto son opcionales. Podés cargar únicamente los datos que tengas.
+    Los cambios se publican en la tienda cuando el servicio de almacenamiento confirma el guardado.
+  </div>
+
+  <section id="products" class="grid"></section>
+</main>
+
+<dialog id="loginDialog">
+  <h2>Acceso de administrador</h2>
+  <p class="muted">Ingresá la contraseña configurada en el servicio seguro de administración.</p>
+  <form id="loginForm">
+    <label for="password">Contraseña</label>
+    <input id="password" type="password" autocomplete="current-password" required>
+    <div class="form-actions">
+      <button type="submit">Ingresar</button>
+      <button type="button" class="secondary" data-close="loginDialog">Cancelar</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="productDialog">
+  <h2 id="formTitle">Agregar producto</h2>
+  <form id="productForm">
+    <input id="productId" type="hidden">
+
+    <label for="name">Título del producto (opcional)</label>
+    <input id="name" maxlength="180" placeholder="Ej.: Termo personalizado">
+
+    <label for="description">Descripción y detalles (opcional)</label>
+    <textarea id="description" placeholder="Materiales, medidas, personalización..."></textarea>
+
+    <label for="price">Precio (opcional)</label>
+    <input id="price" type="number" min="0" step="0.01" placeholder="Ej.: 12000">
+
+    <label for="category">Categoría (opcional)</label>
+    <input id="category" placeholder="Ej.: Vasos térmicos">
+
+    <label for="images">Agregar imágenes (opcional)</label>
+    <input id="images" type="file" accept="image/*" multiple>
+    <div id="imageList" class="media-list"></div>
+
+    <label for="video">Agregar video (opcional)</label>
+    <input id="video" type="file" accept="video/*">
+    <div id="videoList" class="media-list"></div>
+
+    <label for="imageUrl">O pegar URL de imagen (opcional)</label>
+    <input id="imageUrl" type="url" placeholder="https://...">
+
+    <label for="videoUrl">O pegar URL de video (opcional)</label>
+    <input id="videoUrl" type="url" placeholder="https://...">
+
+    <label class="check">
+      <input id="visible" type="checkbox" checked>
+      Producto visible en la tienda
+    </label>
+
+    <p class="small">Podés dejar todos los campos vacíos. Si no querés cambiar una imagen existente, dejá el campo de archivo sin seleccionar.</p>
+
+    <div class="form-actions">
+      <button id="saveBtn" type="submit">Guardar producto</button>
+      <button type="button" class="secondary" data-close="productDialog">Cancelar</button>
+    </div>
+  </form>
+</dialog>
+
 <script>
-  if (window.netlifyIdentity) {
-    window.netlifyIdentity.on("init", user => {
-      if (!user) {
-        window.netlifyIdentity.on("login", () => {
-          document.location.href = "/admin/";
-        });
-      }
-    });
+/*
+  CONFIGURACIÓN:
+  Cuando tengas publicado el servicio seguro, pegá aquí su URL base.
+  Ejemplo: https://tu-servicio.tu-cuenta.workers.dev
+  No pongas aquí tokens de GitHub ni contraseñas.
+*/
+const API_BASE = "PEGAR_AQUI_URL_DEL_SERVICIO";
+
+let adminPassword = "";
+let products = [];
+let currentImages = [];
+let currentVideo = "";
+
+const $ = id => document.getElementById(id);
+const statusBox = $("status");
+
+function setStatus(message, error=false) {
+  statusBox.textContent = message;
+  statusBox.style.borderLeft = error ? "4px solid #e55" : "4px solid #f5b000";
+}
+
+function apiReady() {
+  return API_BASE.startsWith("https://") &&
+    !API_BASE.includes("PEGAR_AQUI");
+}
+
+async function api(path, options={}) {
+  if (!apiReady()) {
+    throw new Error("Todavía falta conectar la URL del servicio seguro. Este panel no puede guardar cambios hasta completar ese paso.");
   }
+  const response = await fetch(API_BASE.replace(/\/$/,"") + path, {
+    ...options,
+    headers: {
+      ...(options.headers || {}),
+      "X-Admin-Password": adminPassword
+    }
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.error || "Error al comunicarse con el servicio.");
+  return data;
+}
+
+function setLoggedIn(value) {
+  $("addBtn").disabled = !value;
+  $("reloadBtn").disabled = !value;
+  $("logoutBtn").hidden = !value;
+  $("loginBtn").hidden = value;
+}
+
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
+
+function renderProducts() {
+  const container = $("products");
+  container.replaceChildren();
+
+  if (!products.length) {
+    container.textContent = "No hay productos cargados o todavía no se pudo conectar el catálogo.";
+    return;
+  }
+
+  products.forEach((p, index) => {
+    const card = document.createElement("article");
+    card.className = "card";
+
+    const image = p.imagen || (Array.isArray(p.imagenes) ? p.imagenes[0] : "") || "";
+    if (image) {
+      const img = document.createElement("img");
+      img.src = image;
+      img.alt = p.nombre || "Producto";
+      card.appendChild(img);
+    }
+
+    const body = document.createElement("div");
+    body.className = "cardbody";
+
+    const title = document.createElement("h3");
+    title.textContent = p.nombre || "(Sin título)";
+    body.appendChild(title);
+
+    const price = document.createElement("p");
+    price.textContent = p.precio === "" || p.precio == null
+      ? "Precio sin especificar"
+      : Number(p.precio).toLocaleString("es-AR", {style:"currency",currency:"ARS",maximumFractionDigits:2});
+    body.appendChild(price);
+
+    const description = document.createElement("p");
+    description.textContent = p.descripcion || "Sin descripción";
+    body.appendChild(description);
+
+    const state = document.createElement("p");
+    state.className = "muted";
+    state.textContent = p.visible === false ? "Oculto en la tienda" : "Visible en la tienda";
+    body.appendChild(state);
+
+    const actions = document.createElement("div");
+    actions.className = "actions";
+
+    const edit = document.createElement("button");
+    edit.textContent = "Editar";
+    edit.addEventListener("click", () => openEditor(index));
+
+    const toggle = document.createElement("button");
+    toggle.className = "secondary";
+    toggle.textContent = p.visible === false ? "Publicar" : "Ocultar";
+    toggle.addEventListener("click", async () => {
+      const previous = p.visible;
+      p.visible = previous === false;
+      await saveAll();
+    });
+
+    const remove = document.createElement("button");
+    remove.className = "danger";
+    remove.textContent = "Eliminar";
+    remove.addEventListener("click", async () => {
+      if (!confirm("¿Querés eliminar este producto?")) return;
+      const old = products;
+      products = products.filter((_, i) => i !== index);
+      await saveAll(old);
+    });
+
+    actions.append(edit, toggle, remove);
+    body.appendChild(actions);
+    card.appendChild(body);
+    container.appendChild(card);
+  });
+}
+
+async function loadProducts() {
+  try {
+    const data = await api("/products");
+    products = Array.isArray(data) ? data : (data.products || []);
+    renderProducts();
+    setStatus("Catálogo cargado. Los cambios se guardan en el servicio conectado.");
+  } catch (error) {
+    setStatus(error.message, true);
+  }
+}
+
+async function saveAll(previousProducts) {
+  renderProducts();
+  try {
+    await api("/save", {
+      method:"POST",
+      headers:{"content-type":"application/json"},
+      body:JSON.stringify({products})
+    });
+    setStatus("Cambios guardados correctamente.");
+    renderProducts();
+  } catch (error) {
+    if (previousProducts) products = previousProducts;
+    renderProducts();
+    setStatus(error.message, true);
+  }
+}
+
+async function uploadFile(file) {
+  const dataUrl = await new Promise((resolve,reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+  const base64 = String(dataUrl).split(",")[1];
+  const result = await api("/upload", {
+    method:"POST",
+    headers:{"content-type":"application/json"},
+    body:JSON.stringify({name:file.name,data:base64,type:file.type})
+  });
+  return result.url;
+}
+
+function openEditor(index=-1) {
+  $("productForm").reset();
+  currentImages = [];
+  currentVideo = "";
+  $("imageList").replaceChildren();
+  $("videoList").replaceChildren();
+
+  if (index >= 0) {
+    const p = products[index];
+    $("formTitle").textContent = "Editar producto";
+    $("productId").value = p.id ?? index;
+    $("name").value = p.nombre ?? "";
+    $("description").value = p.descripcion ?? "";
+    $("price").value = p.precio ?? "";
+    $("category").value = p.categoria ?? "";
+    $("visible").checked = p.visible !== false;
+    currentImages = Array.isArray(p.imagenes) ? [...p.imagenes] : (p.imagen ? [p.imagen] : []);
+    currentVideo = p.video || "";
+    $("imageUrl").value = "";
+    $("videoUrl").value = "";
+  } else {
+    $("formTitle").textContent = "Agregar producto";
+    $("productId").value = "";
+    $("visible").checked = true;
+  }
+
+  currentImages.forEach(url => addMediaLabel($("imageList"), url));
+  if (currentVideo) addMediaLabel($("videoList"), currentVideo);
+  $("productDialog").showModal();
+}
+
+function addMediaLabel(container, url) {
+  const item = document.createElement("span");
+  item.className = "media-item";
+  item.textContent = url;
+  container.appendChild(item);
+}
+
+$("loginBtn").addEventListener("click", () => $("loginDialog").showModal());
+$("addBtn").addEventListener("click", () => openEditor());
+$("reloadBtn").addEventListener("click", loadProducts);
+
+$("logoutBtn").addEventListener("click", () => {
+  adminPassword = "";
+  products = [];
+  renderProducts();
+  setLoggedIn(false);
+  setStatus("Sesión cerrada.");
+});
+
+document.querySelectorAll("[data-close]").forEach(button => {
+  button.addEventListener("click", () => $(button.dataset.close).close());
+});
+
+$("loginForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  adminPassword = $("password").value;
+  try {
+    await loadProducts();
+    if (apiReady() && !statusBox.textContent.includes("Contraseña")) {
+      setLoggedIn(true);
+      $("loginDialog").close();
+      $("password").value = "";
+    }
+  } catch (error) {
+    setStatus(error.message, true);
+  }
+  if (apiReady() && products.length >= 0 && !statusBox.textContent.includes("Falta")) {
+    setLoggedIn(true);
+    $("loginDialog").close();
+    $("password").value = "";
+  }
+});
+
+$("images").addEventListener("change", async event => {
+  const files = [...event.target.files];
+  if (!files.length) return;
+  setStatus("Subiendo imágenes...");
+  try {
+    for (const file of files) {
+      const url = await uploadFile(file);
+      currentImages.push(url);
+      addMediaLabel($("imageList"), url);
+    }
+    setStatus("Imágenes cargadas. Guardá el producto para conservar los cambios.");
+  } catch (error) {
+    setStatus(error.message, true);
+  }
+});
+
+$("video").addEventListener("change", async event => {
+  const file = event.target.files[0];
+  if (!file) return;
+  setStatus("Subiendo video...");
+  try {
+    currentVideo = await uploadFile(file);
+    $("videoList").replaceChildren();
+    addMediaLabel($("videoList"), currentVideo);
+    setStatus("Video cargado. Guardá el producto para conservar los cambios.");
+  } catch (error) {
+    setStatus(error.message, true);
+  }
+});
+
+$("productForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  const rawPrice = $("price").value;
+  const idValue = $("productId").value;
+
+  const product = {
+    id: idValue === "" ? Date.now() : (Number(idValue) || idValue),
+    nombre: $("name").value.trim(),
+    descripcion: $("description").value.trim(),
+    precio: rawPrice === "" ? "" : Number(rawPrice),
+    categoria: $("category").value.trim(),
+    imagen: currentImages[0] || $("imageUrl").value.trim(),
+    imagenes: [...new Set([...currentImages, ...($("imageUrl").value.trim() ? [$("imageUrl").value.trim()] : [])])],
+    video: currentVideo || $("videoUrl").value.trim(),
+    visible: $("visible").checked
+  };
+
+  const index = products.findIndex(p => String(p.id) === String(idValue));
+  if (idValue !== "" && index >= 0) products[index] = product;
+  else products.push(product);
+
+  $("productDialog").close();
+  await saveAll();
+});
+
+setLoggedIn(false);
+renderProducts();
 </script>
+</body>
+</html>
