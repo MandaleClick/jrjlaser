@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "nombre": "Cajas de MDF Personalizadas",
+    "precio": 5500,
+    "imagen": "",
+    "visible": true
+  },
+  {
+    "id": 2,
+    "nombre": "Chopps y Vasos Térmicos",
+    "precio": 12000,
+    "imagen": "",
+    "visible": true
+  },
+  {
+    "id": 3,
+    "nombre": "Llaveros y Mates",
+    "precio": 3500,
+    "imagen": "",
+    "visible": true
+  }
+]
