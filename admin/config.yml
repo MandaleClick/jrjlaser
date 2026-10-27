@@ -1,0 +1,20 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "productos"
+    label: "Productos"
+    folder: "content/productos"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Nombre del Producto", name: "title", widget: "string" }
+      - { label: "Categoría", name: "category", widget: "select", options: ["Cajas de MDF", "Chopp y Vasos", "Llaveros y Mates"] }
+      - { label: "Precio ($)", name: "price", widget: "number" }
+      - { label: "Imagen del Producto", name: "image", widget: "image" }
+      - { label: "Descripción", name: "description", widget: "text" }
+      - { label: "Link de WhatsApp", name: "whatsapp_link", widget: "string", required: false }
